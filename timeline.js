@@ -1,32 +1,78 @@
-const { Block } = require("./block.js")
+//const { Block } = require("./block.js")
 //import { SVG } from "./svg.esm.js"
-const { SVG } = require("./svg.esm.js");
+//const { SVG } = require("./svg.esm.js");
+//const $ = require("jquery");
 
 
 function Track(timeline)
 {
     var self = this;
+    this.parent = timeline;
     this.track = timeline.main.nested();
-    this.height = 100;
+    this.height = 40;
+    this.minHeight = 10;
+    this.loc = {x:0, y:0};
     this.blocks = [];
+    //this.topLine = this.track.line().stroke({ width: 2 }).addClass("trackLines");
+    this.bottomLine = this.track.line().stroke({ width: 4 }).addClass("trackLines").addClass("trackLinesBottom");
+    self.isSelected = false;
+    this.svgCvs = this.parent.parent;
+    this.updateSelfComponents = function() {
+        var ySum = 0;
+        for(var i in self.parent.tracks) {
+            console.log(self.parent.tracks[i]);
+            
+            if(self.parent.tracks[i]!=self) {
+                ySum+=self.parent.tracks[i].height;
+            }
+            else {
+                break
+            }
+        }
+        self.loc.y = ySum;
+        self.track.move(self.loc.x, self.loc.y);
+        self.bottomLine.plot(0, self.height, 10000, self.height);
+        self.bottomLine.front()
+        //self.topLine.plot(0, 1, 10000, 1);
+        //self.topLine.front()
+    }
+    $(document).on("mouseup", function() {
+        self.isSelected = false;
+    });
+    $(document).on("mousemove", function(evt) {
+        if(self.isSelected) {
+            if (self.svgCvs.getCoords(event)[1]-(self.track.y()+self.parent.main.y())>self.minHeight)
+            {
+                self.height = self.svgCvs.getCoords(event)[1]-(self.track.y()+self.parent.main.y());
+                self.evtResize();
+            }
+        }
+    })
     this.update = function() {
+        self.updateSelfComponents();
         for (var i in this.blocks) {
             //self.blocks[i].updateLength(self.unitLength);
             self.blocks[i].updateHeight(self.height);
             self.blocks[i].updateComponent();
         }
     }
+    this.bottomLine.on("mousedown", function(event) {
+        self.isSelected = true;
+    });
     this.evtResize = function() {
-        console.log("Updattttteufe");
         for (var i in this.blocks) {
+            self.updateSelfComponents();
             self.blocks[i].updateHeight(self.height);
+            self.blocks[i].updateComponent();
         }
+        self.parent.update();
     }
 }
 
-function Timeline(parent, currentTime, startTime, length, tracksNbr)
+function Timeline(parent, tracksNbr, currentTime, startTime, length)
 {
     var self = this;
+    this.parent = parent;
     this.currentTime = currentTime;
     this.startTime = startTime;
     this.endTime = length-startTime;
@@ -37,10 +83,9 @@ function Timeline(parent, currentTime, startTime, length, tracksNbr)
     this.v_y_end = tracksNbr*100;
     this.blocks = [];
     this.v_blocks = [];
-    this.main = parent.nested();
+    this.main = self.parent.draw.nested();
     this.unitLength = 1;
     this.tracks = [
-        new Track(this)
     ]
     this.setTime = function(newTime) {
         this.currentTime = newTime
@@ -48,13 +93,17 @@ function Timeline(parent, currentTime, startTime, length, tracksNbr)
     this.getTime = function() {
         return this.currentTime;
     }
-    this.newBlock = function(time, duration, color) {
-        let newBlock = new Block(this.tracks[0], time, duration, color);
-        this.addBlock(newBlock, 0);
+    this.evtMouseup = function() {
+        for(var i in self.tracks) {
+            self.tracks[i].evtMouseup();
+        }
+    }
+    this.newBlock = function(trackId, time, duration, color) {
+        let newBlock = new Block(this.tracks[trackId], time, duration, color);
+        this.addBlock(newBlock, trackId);
     }
     this.update = function() {
         this.main.move(0, 40);
-        console.log("Updated")
         for(var i in self.tracks)
         {
             self.tracks[i].update();
@@ -68,10 +117,16 @@ function Timeline(parent, currentTime, startTime, length, tracksNbr)
        this.tracks[trackId].blocks.splice(newIndex, 0, block)
     }
     this.init = function() {
+        var i = 0;
+        while(i<tracksNbr) {
+            self.tracks.push(new Track(self));
+            i++
+        }
         self.update();
     }
     this.init();
 }
+
 
 function sortedIndex(array, value) {
     var low = 0,
@@ -85,4 +140,4 @@ function sortedIndex(array, value) {
     return low;
 }
 
-exports.Timeline = Timeline
+//exports.Timeline = Timeline
