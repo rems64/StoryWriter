@@ -51,6 +51,8 @@ function Block(parentTrack, time, duration, color)
         if(self.isSelected) {
             self.position.x = self.svgCvs.getCoords(event)[0] - self.clickOffset.x;
             self.shape.move(self.position.x, self.position.y);
+            var concernedTrack = self.parent.parent.getApparteningTrack(self.svgCvs.getCoords(event)[1]);
+            //console.log(concernedTrack);
             //self.shape.front();
             //console.log(self.position.x);
             //console.log(self.position.y);

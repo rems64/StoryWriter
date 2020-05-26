@@ -56,6 +56,7 @@ function Track(timeline)
             self.blocks[i].updateComponent();
         }
     }
+
     this.bottomLine.on("mousedown", function(event) {
         self.isSelected = true;
     });
@@ -115,6 +116,27 @@ function Timeline(parent, tracksNbr, currentTime, startTime, length)
 
        newIndex = sortedIndex(this.tracks[trackId].blocks, block.time);
        this.tracks[trackId].blocks.splice(newIndex, 0, block)
+    }
+    this.getApparteningTrack = function(targetHeight) {
+        var currentHeight = 0;
+        var height = self.tracks[0].height;
+        for(var i in self.tracks) {
+            currentHeight+=self.tracks[i].loc.x
+            height = self.tracks[i].height;
+            if(targetHeight > currentHeight) {
+                if(targetHeight < (currentHeight+height)) {
+                    console.log(i)
+                    return i;
+                    break
+                }
+                else {
+                    console.log(targetHeight);
+                    console.log((currentHeight+height))
+                }
+            }
+            else {
+            }
+        }
     }
     this.init = function() {
         var i = 0;
