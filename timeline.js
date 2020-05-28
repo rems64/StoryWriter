@@ -52,6 +52,7 @@ function Track(timeline)
         self.updateSelfComponents();
         for (var i in this.blocks) {
             //self.blocks[i].updateLength(self.unitLength);
+            self.updateSelfComponents();
             self.blocks[i].updateHeight(self.height);
             self.blocks[i].updateComponent();
         }
@@ -121,22 +122,23 @@ function Timeline(parent, tracksNbr, currentTime, startTime, length)
         var currentHeight = 0;
         var height = self.tracks[0].height;
         for(var i in self.tracks) {
-            currentHeight+=self.tracks[i].loc.x
+            //currentHeight+=self.tracks[i].loc.x
+            currentHeight+=height
             height = self.tracks[i].height;
             if(targetHeight > currentHeight) {
                 if(targetHeight < (currentHeight+height)) {
-                    console.log(i)
+                    //console.log(true)
                     return i;
-                    break
                 }
                 else {
-                    console.log(targetHeight);
-                    console.log((currentHeight+height))
+                    //console.log(targetHeight);
+                    //console.log((currentHeight+height))
                 }
             }
             else {
             }
         }
+        return -1
     }
     this.init = function() {
         var i = 0;

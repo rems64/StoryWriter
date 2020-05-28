@@ -49,10 +49,15 @@ function Block(parentTrack, time, duration, color)
     });
     $(document).on("mousemove", function(event) {
         if(self.isSelected) {
-            self.position.x = self.svgCvs.getCoords(event)[0] - self.clickOffset.x;
             self.shape.move(self.position.x, self.position.y);
+            self.position.x = self.svgCvs.getCoords(event)[0] - self.clickOffset.x;
             var concernedTrack = self.parent.parent.getApparteningTrack(self.svgCvs.getCoords(event)[1]);
             //console.log(concernedTrack);
+            if(concernedTrack>=0) {
+                self.shape.addTo(self.parent.parent.tracks[concernedTrack].track);
+                self.parentTrack = self.parent.parent.tracks[concernedTrack];
+            }
+            //self.position.y = self.parentTrack.loc.y;
             //self.shape.front();
             //console.log(self.position.x);
             //console.log(self.position.y);
