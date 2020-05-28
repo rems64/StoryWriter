@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "electron ."
+    "start": "electron .",
+    "pkg-win": "electron-packager . StoryWriter --out out/ --platform=win32 --asar --overwrite"
   },
   "author": "Remy FAYET",
   "license": "Apache-2.0",
@@ -13,5 +14,9 @@
     "@svgdotjs/svg.js": "^3.0.16",
     "electron": "^9.0.0",
     "jquery": "^3.5.1"
+  },
+  "devDependencies": {
+    "electron-packager": "^14.2.1",
+    "electron": "^9.0.0"
   }
 }
