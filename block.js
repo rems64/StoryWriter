@@ -16,6 +16,8 @@ function Block(parentTrack, time, duration, color)
     this.shape = parentTrack.track.rect(this.size.x, this.size.y);
     this.clickOffset = {x:0, y:0};
     this.svgCvs = this.parent.svgCvs;
+    self.hover = false;
+    this.handleHover = false;
     this.getTime = function() {
         return this.time;
     }
@@ -29,6 +31,7 @@ function Block(parentTrack, time, duration, color)
     }
     this.setLength = function(newLength) {
         self.size.x = newLength;
+        self.shape.size(self.size.x, self.size.y);
     }
     this.updateLength = function(newUnit) {
         self.size.x = newUnit*duration;
@@ -38,6 +41,17 @@ function Block(parentTrack, time, duration, color)
     }
     this.shape.on("click", function(event) {
         evtBlockClick(event, self);
+        self.shape.front();
+    })
+    this.shape.on("mouseover", function(event) {
+        console.log("handleHover!")
+        self.hover = true;
+    })
+    this.shape.on("mouseout", function() {
+        if(!self.isSelected) {
+            self.hover = false;
+            document.body.style.cursor = 'default';
+        }
     })
     this.shape.on("mousedown", function(event) {
         self.isSelected = true;
@@ -49,18 +63,42 @@ function Block(parentTrack, time, duration, color)
     });
     $(document).on("mousemove", function(event) {
         if(self.isSelected) {
-            self.shape.move(self.position.x, self.position.y);
-            self.position.x = self.svgCvs.getCoords(event)[0] - self.clickOffset.x;
-            var concernedTrack = self.parent.parent.getApparteningTrack(self.svgCvs.getCoords(event)[1]);
-            //console.log(concernedTrack);
-            if(concernedTrack>=0) {
-                self.shape.addTo(self.parent.parent.tracks[concernedTrack].track);
-                self.parentTrack = self.parent.parent.tracks[concernedTrack];
+            if(!self.handleHover) {
+                self.shape.move(self.position.x, self.position.y);
+                self.position.x = self.svgCvs.getCoords(event)[0] - self.clickOffset.x;
+                var concernedTrack = self.parent.parent.getApparteningTrack(self.svgCvs.getCoords(event)[1]);
+                //console.log(concernedTrack);
+                if(concernedTrack>=0) {
+                    self.shape.addTo(self.parent.parent.tracks[concernedTrack].track);
+                    self.pTrack.removeBlock(self);
+                    self.pTrack = self.parent.parent.tracks[concernedTrack];
+                    self.pTrack.addBlock(self);
+                }
+                //self.position.y = self.pTrack.loc.y;
+                //self.shape.front();
+                //console.log(self.position.x);
+                //console.log(self.position.y);
             }
-            //self.position.y = self.parentTrack.loc.y;
-            //self.shape.front();
-            //console.log(self.position.x);
-            //console.log(self.position.y);
+            else{
+                console.log('updating length')
+                self.updateLength();
+                var nLength = self.svgCvs.getCoords(event)[0] - self.position.x;
+                self.setLength(nLength);
+            }
+        }
+        else if(self.hover) {
+            var deltaX = self.svgCvs.getCoords(event)[0] - self.position.x;
+            var margin = 10;
+            //if(deltaX<self.duration) {
+                if(deltaX>(self.size.x-margin)) {
+                    document.body.style.cursor = 'e-resize';
+                    self.handleHover = true;
+                }
+                else {
+                    document.body.style.cursor = 'default';
+                    self.handleHover = false;
+                }
+            //}
         }
     });
     this.init = function() {

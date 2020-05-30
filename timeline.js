@@ -20,7 +20,7 @@ function Track(timeline)
     this.updateSelfComponents = function() {
         var ySum = 0;
         for(var i in self.parent.tracks) {
-            console.log(self.parent.tracks[i]);
+            //console.log(self.parent.tracks[i]);
             
             if(self.parent.tracks[i]!=self) {
                 ySum+=self.parent.tracks[i].height;
@@ -32,9 +32,20 @@ function Track(timeline)
         self.loc.y = ySum;
         self.track.move(self.loc.x, self.loc.y);
         self.bottomLine.plot(0, self.height, 10000, self.height);
-        self.bottomLine.front()
+        //self.bottomLine.front()
         //self.topLine.plot(0, 1, 10000, 1);
         //self.topLine.front()
+    }
+    this.removeBlock = function(blk) {
+        for(var b in self.blocks) {
+            if(self.blocks[b]==blk) {
+                self.blocks.splice(b, 1);
+            }
+        }
+    }
+    this.addBlock = function(blk) {
+        newIndex = sortedIndex(self.blocks, blk.time);
+        self.blocks.splice(newIndex, 0, blk)
     }
     $(document).on("mouseup", function() {
         self.isSelected = false;
