@@ -44,7 +44,7 @@ function Block(parentTrack, time, duration, color)
         self.shape.front();
     })
     this.shape.on("mouseover", function(event) {
-        console.log("handleHover!")
+        //console.log("handleHover!")
         self.hover = true;
     })
     this.shape.on("mouseout", function() {
@@ -58,8 +58,9 @@ function Block(parentTrack, time, duration, color)
         self.clickOffset.x = self.svgCvs.getCoords(event)[0] - self.position.x;
         self.clickOffset.y = self.svgCvs.getCoords(event)[1] - self.position.y;
     });
-    this.shape.on("dbclick", function() {
-        console.
+    this.shape.on("dblclick", function(event) {
+        // TO DO
+        var colorSelect = new colorPicker(document.body);
     })
     $(document).on("mouseup", function() {
         self.isSelected = false;
@@ -86,10 +87,10 @@ function Block(parentTrack, time, duration, color)
                 //console.log(self.position.y);
             }
             else{
-                console.log('updating length')
+                //console.log('updating length')
                 self.updateLength();
                 var nLength = self.svgCvs.getCoords(event)[0] - self.position.x;
-                console.log(nLength)
+                //console.log(nLength)
                 margin = 10
                 if(nLength>margin) {
                     self.setLength(nLength);
@@ -123,6 +124,6 @@ function Block(parentTrack, time, duration, color)
 
 
 function evtBlockClick(event, him){
-    console.log(him);
+    //console.log(him);
 }
 //exports.Block = Block
