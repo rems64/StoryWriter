@@ -58,6 +58,9 @@ function Block(parentTrack, time, duration, color)
         self.clickOffset.x = self.svgCvs.getCoords(event)[0] - self.position.x;
         self.clickOffset.y = self.svgCvs.getCoords(event)[1] - self.position.y;
     });
+    this.shape.on("dbclick", function() {
+        console.
+    })
     $(document).on("mouseup", function() {
         self.isSelected = false;
     });
@@ -73,6 +76,9 @@ function Block(parentTrack, time, duration, color)
                     self.pTrack.removeBlock(self);
                     self.pTrack = self.parent.parent.tracks[concernedTrack];
                     self.pTrack.addBlock(self);
+                    self.size.y = self.parent.parent.tracks[concernedTrack].height;
+                    self.shape.size(self.size.x, self.size.y);
+                    //console.log(concernedTrack)
                 }
                 //self.position.y = self.pTrack.loc.y;
                 //self.shape.front();
@@ -83,7 +89,14 @@ function Block(parentTrack, time, duration, color)
                 console.log('updating length')
                 self.updateLength();
                 var nLength = self.svgCvs.getCoords(event)[0] - self.position.x;
-                self.setLength(nLength);
+                console.log(nLength)
+                margin = 10
+                if(nLength>margin) {
+                    self.setLength(nLength);
+                }
+                else {
+                    self.setLength(margin);
+                }
             }
         }
         else if(self.hover) {
