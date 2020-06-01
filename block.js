@@ -60,7 +60,8 @@ function Block(parentTrack, time, duration, color)
     });
     this.shape.on("dblclick", function(event) {
         // TO DO
-        var colorSelect = new colorPicker(document.body);
+        //var colorSelect = new colorPicker(document.body);
+        askText
     })
     $(document).on("mouseup", function() {
         self.isSelected = false;

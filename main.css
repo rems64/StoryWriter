@@ -49,3 +49,101 @@ body, html
 {
     cursor: n-resize;
 }
+
+.input-popup-container
+{
+    position: absolute;
+    width: 80%;
+    height: 80%;
+    display: flex;
+    flex-direction: column;
+    background-color: #212121;
+    border: solid black 4px;
+    border-radius: 5px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.input-popup-textarea
+{
+    background-color: #212121;
+    color: white;
+    align-self: center;
+    width: 98%;
+    height: 85%;
+    margin-top: 5px;
+    outline: none;
+    border: none;
+    resize: none;
+}
+
+.input-popup-btnswrap
+{
+    display: flex;   
+    flex-direction: row;
+    width: 100%;
+    justify-content: space-between;
+}
+
+.input-popup-savebtn
+{
+    align-self: flex-end;
+    outline: none;
+    text-align: center;
+    text-decoration: none;
+    padding: 10px;
+    padding: 15px 32px;
+    background-color: hsl(110, 80%, 40%);
+    color: white;
+    border: none;
+    
+    margin: 1%;
+
+    display: inline-block;
+    font-size: 16px;
+
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+.input-popup-undobtn
+{
+    display: inline;
+    align-self: flex-start;
+    outline: none;
+    text-align: center;
+    text-decoration: none;
+    padding: 10px;
+    padding: 15px 32px;
+    background-color: hsl(110, 0%, 40%);
+    color: white;
+    border: none;
+    
+    margin: 1%;
+
+    display: inline-block;
+    font-size: 16px;
+
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+
+}
+
+.input-popup-savebtn:hover
+{
+    background-color: hsl(110, 80%, 35%);
+}
+
+.input-popup-savebtn:active
+{
+    background-color: hsl(110, 80%, 30%);
+}
+
+.input-popup-undobtn:hover
+{
+    background-color: hsl(110, 0%, 35%);
+}
+
+.input-popup-undobtn:active
+{
+    background-color: hsl(110, 0%, 30%);
+}
