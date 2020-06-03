@@ -1,6 +1,9 @@
 const $ = require("jquery");
 const { SVG } = require("./svg.esm.js");
 
+var isInpupPopupOpen = false;
+var concernedObj;
+
 function isNode()
 {
     return ((typeof process !== 'undefined') && (process.release.name === 'node'))
@@ -38,4 +41,41 @@ function colorPicker(parent)
     this.init();
 }
 
+function showInputPopup(concerned)
+{
+    $("#input-popup").css("visibility", "visible");
+    $("#input-popup-textarea").val(concerned.text);
+    isInpupPopupOpen = true;
+    concernedObj = concerned;
+}
+
+
+function hideInputPopup()
+{
+    $("#input-popup").css("visibility", "hidden");
+    isInpupPopupOpen = false;
+}
+
+$("#input-popup-undobtn").click((event) => {
+    hideInputPopup();
+})
+
+$("#input-popup-savebtn").click((evt) => {
+    concernedObj.text = $("#input-popup-textarea").val()
+    concernedObj.updateText();
+    hideInputPopup();
+})
+
+$.valHooks.textarea = {
+    get: function(elem) {
+        return elem.value.replace(/\r?\n/g, "\r\n");
+    }
+};
+
+
+$(document).keydown((evt) => {
+    if(evt.key === "Escape") {
+        hideInputPopup()
+    }
+})
 //exports.isNode = isNode

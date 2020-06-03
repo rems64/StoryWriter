@@ -13,17 +13,24 @@ function Block(parentTrack, time, duration, color)
     this.clickOffset = {x: 0, y: 0};
     this.size = {x:this.duration, y:parentTrack.height}
     this.pTrack = parentTrack;
-    this.shape = parentTrack.track.rect(this.size.x, this.size.y);
+    this.container = parentTrack.track.group()
+    this.shape = this.container.rect(this.size.x, this.size.y);
+    this.svgTxt = this.container.text("").addClass("blockTxtClass");
     this.clickOffset = {x:0, y:0};
     this.svgCvs = this.parent.svgCvs;
     self.hover = false;
     this.handleHover = false;
+    this.text = "";
     this.getTime = function() {
         return this.time;
     }
     this.updateComponent = function() {
-        self.shape.move(this.position.x, this.position.y);
+        self.container.move(this.position.x, this.position.y);
         self.shape.size(self.size.x, self.size.y);
+    }
+    this.updateText = function() {
+        //self.svgTxt.text(self.text);
+        self.svgTxt.text("...");
     }
     this.updateColor = function(color) {
         self.color = color;
@@ -42,9 +49,10 @@ function Block(parentTrack, time, duration, color)
     this.shape.on("click", function(event) {
         evtBlockClick(event, self);
         self.shape.front();
+        self.svgTxt.front();
     })
     this.shape.on("mouseover", function(event) {
-        //console.log("handleHover!")
+        //console.log("handleHover!");
         self.hover = true;
     })
     this.shape.on("mouseout", function() {
@@ -61,20 +69,41 @@ function Block(parentTrack, time, duration, color)
     this.shape.on("dblclick", function(event) {
         // TO DO
         //var colorSelect = new colorPicker(document.body);
-        askText
+        showInputPopup(self);
     })
+    var delay=400;
+    this.setTimeoutConst;
+    this.shape.on("mouseover", function() {
+        self.setTimeoutConst = setTimeout(function() {
+            $("#bubblePop").css("top", String(self.parent.loc.y+$("#timeline").position().top)+"px");
+            $("#bubblePop").css("left", String(self.position.x+(self.size.x/2))+"px");
+            console.log(self.position.x+(self.size.x/2));
+            //$("#bubblePop").css("visibility", "visible");
+            console.log(self.text)
+            $("#bubblePop").html(self.text.split("\n").join("<br />"));
+            $("#bubblePop").animate({
+                opacity: 1
+            }, 400);
+    }, delay);
+    });
+    this.shape.on("mouseout", function() {
+        clearTimeout(self.setTimeoutConst);
+        $("#bubblePop").animate({
+            opacity: 0
+        }, 400);
+});
     $(document).on("mouseup", function() {
         self.isSelected = false;
     });
     $(document).on("mousemove", function(event) {
         if(self.isSelected) {
             if(!self.handleHover) {
-                self.shape.move(self.position.x, self.position.y);
+                self.container.move(self.position.x, self.position.y);
                 self.position.x = self.svgCvs.getCoords(event)[0] - self.clickOffset.x;
                 var concernedTrack = self.parent.parent.getApparteningTrack(self.svgCvs.getCoords(event)[1]);
                 //console.log(concernedTrack);
                 if(concernedTrack>=0) {
-                    self.shape.addTo(self.parent.parent.tracks[concernedTrack].track);
+                    self.container.addTo(self.parent.parent.tracks[concernedTrack].track);
                     self.pTrack.removeBlock(self);
                     self.pTrack = self.parent.parent.tracks[concernedTrack];
                     self.pTrack.addBlock(self);

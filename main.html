@@ -11,14 +11,21 @@
         <div id="charactersOverview"></div>
         <div id="preview" class="red"></div>
     </div>
-    <div class="input-popup-container">
-        <textarea placeholder="Contenu" class="input-popup-textarea" wrap="off" >Ancien texte</textarea>
+    <div id="timelineToolbar">
+        <button class="timelineToolbarBtn">Ajouter</button>
+    </div>
+    <div id="timeline">
+    </div>
+    <div class="input-popup-container" id="input-popup">
+        <textarea placeholder="Contenu" class="input-popup-textarea" id="input-popup-textarea" wrap="off" >Ancien texte</textarea>
         <div class="input-popup-btnswrap">
-            <button class="input-popup-undobtn">Annuler</button>
-            <button class="input-popup-savebtn">Sauvegarder</button>
+            <button class="input-popup-undobtn" id="input-popup-undobtn">Annuler</button>
+            <button class="input-popup-savebtn" id="input-popup-savebtn">Sauvegarder</button>
         </div>
     </div>
-    <div id="timeline"></div>
+    <div class="bubblePop" id="bubblePop">
+        Ceci est le long texte contenu dans ce bloc
+    </div>
     <script src="./utils.js"></script>
     <script src="./svg.js"></script>
     <script src="./block.js"></script>
