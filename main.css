@@ -35,7 +35,7 @@ body, html
 {
     background-color: #202020;
     outline: solid black 1px;
-    height: 50%;
+    height: 45%;
     width: 100%;
 }
 
@@ -48,4 +48,197 @@ body, html
 .trackLinesBottom
 {
     cursor: n-resize;
+}
+
+.input-popup-container
+{
+    visibility: hidden;
+    position: absolute;
+    width: 80%;
+    height: 80%;
+    display: flex;
+    flex-direction: column;
+    background-color: #212121;
+    border: solid black 4px;
+    border-radius: 5px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.input-popup-textarea
+{
+    background-color: #212121;
+    color: white;
+    align-self: center;
+    width: 98%;
+    height: 85%;
+    margin-top: 5px;
+    outline: none;
+    border: none;
+    resize: none;
+}
+
+.input-popup-btnswrap
+{
+    display: flex;   
+    flex-direction: row;
+    width: 100%;
+    justify-content: space-between;
+}
+
+.input-popup-savebtn
+{
+    align-self: flex-end;
+    outline: none;
+    text-align: center;
+    text-decoration: none;
+    padding: 10px;
+    padding: 15px 32px;
+    background-color: hsl(110, 80%, 40%);
+    color: white;
+    border: none;
+    
+    margin: 1%;
+
+    display: inline-block;
+    font-size: 16px;
+
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+.input-popup-undobtn
+{
+    display: inline;
+    align-self: flex-start;
+    outline: none;
+    text-align: center;
+    text-decoration: none;
+    padding: 10px;
+    padding: 15px 32px;
+    background-color: hsl(110, 0%, 40%);
+    color: white;
+    border: none;
+    
+    margin: 1%;
+
+    display: inline-block;
+    font-size: 16px;
+
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+
+}
+
+.input-popup-savebtn:hover
+{
+    background-color: hsl(110, 80%, 35%);
+}
+
+.input-popup-savebtn:active
+{
+    background-color: hsl(110, 80%, 30%);
+}
+
+.input-popup-undobtn:hover
+{
+    background-color: hsl(110, 0%, 35%);
+}
+
+.input-popup-undobtn:active
+{
+    background-color: hsl(110, 0%, 30%);
+}
+
+.blockTxtClass
+{
+    fill: white;
+    -webkit-user-select: none;
+    user-select: none;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+#timelineToolbar
+{
+    width: 100%;
+    height: 5%;
+    background-color: hsl(0, 0%, 10%);
+    display: flex;
+    flex-direction: row;
+}
+
+.timelineToolbarBtn
+{
+    height: 100%;
+    width: 100px;
+
+    background-color: hsl(110, 0%, 40%);
+
+    outline: none;
+    text-align: center;
+    text-decoration: none;
+    color: white;
+    border: none;
+    
+
+    display: inline-block;
+    font-size: 16px;
+
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+
+}
+
+.bubblePop
+{
+    background-color: hsl(110, 0%, 40%);
+    position: absolute;
+    padding: 10px;
+    top: 0px;
+    left: 0px;
+    color: white;
+    transform: translate(-50%, -100%);
+    opacity: 0;
+}
+
+.bubblePop::after
+{
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -15px;
+    border-width: 15px;
+    border-style: solid;
+    border-color: hsl(110, 0%, 40%) transparent transparent transparent;
+}
+
+.contextMenuContainer
+{
+    background-color: hsl(0, 0%, 40%);
+    padding: 2px;
+    position: absolute;
+    display: inline-block;
+    top: 0;
+    left: 0;
+}
+
+.contextMenuElement
+{
+    background-color: hsl(0, 0%, 35%);
+    padding: 10px;
+    -webkit-user-select: none;
+    user-select: none;
+    color: white;
+
+    font-size: 16px;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+.contextMenuElement:hover
+{
+    background-color: hsl(0, 0%, 30%);
+}
+
+.contextMenuElement:active
+{
+    background-color: hsl(0, 0%, 25%);
 }
