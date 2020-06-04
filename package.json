@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "electron .",
     "pkg-win": "electron-packager . StoryWriter --out out/ --platform=win32 --asar --overwrite",
-    "pkg-all": "electron-packager . StoryWriter --out out/ --all"
+    "pkg-all": "electron-packager . StoryWriter --out out/ --all --overwrite"
   },
   "author": "Remy FAYET",
   "license": "Apache-2.0",

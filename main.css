@@ -210,3 +210,35 @@ body, html
     border-style: solid;
     border-color: hsl(110, 0%, 40%) transparent transparent transparent;
 }
+
+.contextMenuContainer
+{
+    background-color: hsl(0, 0%, 40%);
+    padding: 2px;
+    position: absolute;
+    display: inline-block;
+    top: 0;
+    left: 0;
+}
+
+.contextMenuElement
+{
+    background-color: hsl(0, 0%, 35%);
+    padding: 10px;
+    -webkit-user-select: none;
+    user-select: none;
+    color: white;
+
+    font-size: 16px;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+.contextMenuElement:hover
+{
+    background-color: hsl(0, 0%, 30%);
+}
+
+.contextMenuElement:active
+{
+    background-color: hsl(0, 0%, 25%);
+}

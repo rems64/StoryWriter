@@ -24,7 +24,6 @@ function colorPicker(parent)
     this.circleSelected = false;
     $(this.circleGradient).on("mousedown", function(event) {
         self.circleSelected = true;
-        console.log("oivhsgs");
         
     });
     $(document).on("mouseup", function(event) {
@@ -39,6 +38,58 @@ function colorPicker(parent)
 
     }
     this.init();
+}
+
+function ContextMenu(parent, loc, elements)
+{
+    var self = this;
+    this.container = document.createElement("div");
+    this.elements = [];
+    $(this.container).css("left", String(loc.x-10)+"px");
+    $(this.container).css("top", String(loc.y-10)+"px");
+    this.destroy = function() {
+        console.log("Bye bye")
+        //$(this.container).remove();
+        $(".contextMenuContainer").remove();
+    };
+    $(this.container).on("mouseleave", function() {
+        console.log("Destroying");
+        $(".contextMenuContainer").remove();
+    })
+    if(parent!=false)
+    {
+        $(this.container).addClass("contextMenuContainer").appendTo($(parent));
+    }
+    else
+    {
+        $(this.container).addClass("contextMenuContainer").appendTo($("body"));
+    }
+    var j = 0;
+    for(var i in elements) {
+        this.elements.push(new ContextMenuElement(this, {
+            title: i,
+            callback: elements[i] 
+        }));
+    }
+    this.remove = function() {
+        /*
+        for(var i in this.elements) {
+            console.log(i)
+            this.elements[i].remove();
+        }*/
+        this.container.remove();
+    }
+}
+
+function ContextMenuElement(ctxtMenu, infos)
+{
+    this.bg = document.createElement("div");
+    this.bg.innerHTML = infos.title;
+    $(this.bg).addClass("contextMenuElement").appendTo($(ctxtMenu.container));
+    $(this.bg).on("click", function() {
+        ctxtMenu.remove();
+        infos.callback();
+    })
 }
 
 function showInputPopup(concerned)

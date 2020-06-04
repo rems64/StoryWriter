@@ -62,9 +62,28 @@ function Block(parentTrack, time, duration, color)
         }
     })
     this.shape.on("mousedown", function(event) {
-        self.isSelected = true;
-        self.clickOffset.x = self.svgCvs.getCoords(event)[0] - self.position.x;
-        self.clickOffset.y = self.svgCvs.getCoords(event)[1] - self.position.y;
+        //console.log(event)
+        switch (event.which) {
+            case 1:
+                self.isSelected = true;
+                self.clickOffset.x = self.svgCvs.getCoords(event)[0] - self.position.x;
+                self.clickOffset.y = self.svgCvs.getCoords(event)[1] - self.position.y;
+                break;
+            case 3:
+                new ContextMenu(false,
+                    {
+                        x: event.clientX,
+                        y: event.clientY
+                    },
+                    {
+                        "Editer": function() {
+                            showInputPopup(self);
+                        },
+                        "Changer la couleur": function() {
+                            console.log("Changement de la couleur!");
+                        }
+                    });
+        }
     });
     this.shape.on("dblclick", function(event) {
         // TO DO
@@ -75,11 +94,9 @@ function Block(parentTrack, time, duration, color)
     this.setTimeoutConst;
     this.shape.on("mouseover", function() {
         self.setTimeoutConst = setTimeout(function() {
-            $("#bubblePop").css("top", String(self.parent.loc.y+$("#timeline").position().top)+"px");
+            $("#bubblePop").css("top", String(self.pTrack.loc.y+$("#timeline").position().top)+"px");
             $("#bubblePop").css("left", String(self.position.x+(self.size.x/2))+"px");
-            console.log(self.position.x+(self.size.x/2));
             //$("#bubblePop").css("visibility", "visible");
-            console.log(self.text)
             $("#bubblePop").html(self.text.split("\n").join("<br />"));
             $("#bubblePop").animate({
                 opacity: 1
