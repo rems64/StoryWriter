@@ -80,7 +80,7 @@ function Block(parentTrack, time, duration, color)
                             showInputPopup(self);
                         },
                         "Changer la couleur": function() {
-                            console.log("Changement de la couleur!");
+                            showColorPopop(self);
                         }
                     });
         }

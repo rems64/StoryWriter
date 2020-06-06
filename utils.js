@@ -1,5 +1,6 @@
 const $ = require("jquery");
 const { SVG } = require("./svg.esm.js");
+const fs = require("fs");
 
 var isInpupPopupOpen = false;
 var concernedObj;
@@ -90,6 +91,11 @@ function ContextMenuElement(ctxtMenu, infos)
         ctxtMenu.remove();
         infos.callback();
     })
+}
+
+function showColorPopop(concerned)
+{
+    new colorPicker("body");
 }
 
 function showInputPopup(concerned)

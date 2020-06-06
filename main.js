@@ -1,6 +1,7 @@
 //const { isNode } = require("./utils.js")
 //const { svgCanvas } = require("./svg.js")
 //const { Timeline } = require("./timeline.js")
+const { Menu } = require("electron");
 
 
 let svg = new svgCanvas("#timeline", "timelineSvg");

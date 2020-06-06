@@ -98,8 +98,47 @@ function Timeline(parent, tracksNbr, currentTime, startTime, length)
     this.v_blocks = [];
     this.main = self.parent.draw.nested();
     this.unitLength = 1;
-    this.tracks = [
-    ]
+    this.tracks = []
+    this.compiledTimeline = [];
+    this.compile = function() {
+        self.compiledTimeline = [];
+        var i = 0;
+        for(var trk in self.tracks) {
+            var compiledTrack = []
+            var j = 0;
+            for(var blkIndex in self.tracks[trk].blocks)
+            {
+                var blk = self.tracks[trk].blocks[blkIndex]
+                var tmpBlock = 
+                {
+                    t: blk.time,
+                    d: blk.duration,
+                    c: blk.color
+                }
+                compiledTrack.push(tmpBlock);
+                //j++;
+            }
+            self.compiledTimeline.push(compiledTrack);
+            i++;
+        }
+        //console.log(self.compiledTimeline);
+    }
+    this.save = function(path) {
+        var toWrite = JSON.stringify(self.compiledTimeline);
+        //console.log(toWrite);
+        fs.writeFile(path, toWrite, function (err) {
+            if (err) {
+              console.log('[ERROR] An error occured during saving process, please report');
+              console.log(err.message);
+              return;
+            }
+            console.log('[INFO] Saving success')
+          });
+    };
+    this.load = function(path) {
+
+    };
+
     this.setTime = function(newTime) {
         this.currentTime = newTime
     };
@@ -174,5 +213,6 @@ function sortedIndex(array, value) {
     }
     return low;
 }
+
 
 //exports.Timeline = Timeline
