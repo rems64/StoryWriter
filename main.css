@@ -7,6 +7,7 @@ body, html
     margin: 0;
 }
 
+
 #firstRow
 {
     height: 50%;
@@ -185,6 +186,7 @@ body, html
 
     font-family: Verdana, Geneva, Tahoma, sans-serif;
 
+    border-left: solid black 1px;
 }
 
 .bubblePop
@@ -242,3 +244,97 @@ body, html
 {
     background-color: hsl(0, 0%, 25%);
 }
+
+.errorMsg
+{
+    background-color: red;
+    padding: 2% 5% 2% 5%;
+    width: 90%;
+    color: white;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    text-align: center;
+    font-size: 16px;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+#infosBar
+{
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 30%;
+    height: 80%;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.infoMsg
+{
+    position: relative;
+    right: 0;
+
+    margin: 10px;
+    padding: 20px;
+
+    background-color: hsl(108, 80%, 40%);
+
+    font-size: 16px;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    color: white;
+
+    animation-name: appear;
+    animation-duration: 5s;
+
+    -webkit-user-select: none;
+    user-select: none;
+
+    box-shadow: 0px 0px 10px black;
+
+    pointer-events: none;
+    visibility: visible;
+}
+
+@keyframes appear {
+    0% {right: -100%;}
+    10% {right: 0px;}
+    90% {right: 0px;}
+    100% {right: -100%;}
+  }
+
+  #addTrackBtn
+  {
+      position: absolute;
+      width: 30px;
+      height: 30px;
+      left: -20px;
+      bottom: 0;
+      background-color: hsl(100, 80%, 40%);
+
+      outline: none;
+      text-align: center;
+      text-decoration: none;
+      color: white;
+      border: none;
+      
+  
+      display: inline-block;
+      font-size: 16px;
+  
+      font-family: Verdana, Geneva, Tahoma, sans-serif;  
+
+      -webkit-user-select: none;
+      user-select: none;
+      transition: 0.5s;
+  }
+
+  #addTrackBtn:hover
+  {
+      left: 0;
+  }

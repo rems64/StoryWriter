@@ -1,9 +1,20 @@
 const $ = require("jquery");
 const { SVG } = require("./svg.esm.js");
 const fs = require("fs");
+const ipc = require('electron').ipcRenderer;
 
 var isInpupPopupOpen = false;
 var concernedObj;
+
+var locals = {}
+
+ipc.send('getLocals', {});
+ipc.on('sendLocals', (event, data) => {
+    console.log("Async reply")
+    console.log(data);
+    locals=data.locals
+});
+
 
 function isNode()
 {
@@ -129,6 +140,35 @@ $.valHooks.textarea = {
     }
 };
 
+function error(txt) {
+    new Error(txt);
+}
+
+function Error(txt) {
+    var self = this;
+    this.msg = document.createElement("div")
+    $(this.msg).addClass("errorMsg").appendTo("body");
+    //this.msg.innerHTML = String("An error occured during saving process, please report<br /><br /><i>" + txt + "</i>");
+    this.msg.innerHTML = String(locals.errorMsg + "<br /><br /><i>" + txt + "</i>");
+    this.timeout = setTimeout(function(){
+        self.msg.remove()
+    }, 7000);
+}
+
+function info(txt) {
+    new Info(txt);
+}
+
+function Info(txt) {
+    var self = this;
+    this.msg = document.createElement("div")
+    $(this.msg).addClass("infoMsg").appendTo($("#infosBar"));
+    //this.msg.innerHTML = String("An error occured during saving process, please report<br /><br /><i>" + txt + "</i>");
+    this.msg.innerHTML = String(locals.infoMsg + txt);
+    this.timeout = setTimeout(function(){
+        self.msg.remove()
+    }, 5000);
+}
 
 $(document).keydown((evt) => {
     if(evt.key === "Escape") {

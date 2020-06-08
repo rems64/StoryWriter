@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./main.css">
+    <link rel="stylesheet" href="./node_modules/@fortawesome/fontawesome-free/css/all.css">
     <title>Document</title>
 </head>
 <body>
@@ -12,9 +13,11 @@
         <div id="preview" class="red"></div>
     </div>
     <div id="timelineToolbar">
-        <button class="timelineToolbarBtn">Ajouter</button>
+        <button class="timelineToolbarBtn" id="addBtn">Ajouter</button>
+        <button class="timelineToolbarBtn" id="clearBtn">Clear</button>
     </div>
     <div id="timeline">
+        <button id="addTrackBtn">+</button>
     </div>
     <div class="input-popup-container" id="input-popup">
         <textarea placeholder="Contenu" class="input-popup-textarea" id="input-popup-textarea" wrap="off" >Ancien texte</textarea>
@@ -25,6 +28,9 @@
     </div>
     <div class="bubblePop" id="bubblePop">
         Ceci est le long texte contenu dans ce bloc
+    </div>
+    <div id="infosBar">
+
     </div>
     <script src="./utils.js"></script>
     <script src="./svg.js"></script>

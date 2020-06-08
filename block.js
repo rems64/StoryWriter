@@ -21,6 +21,9 @@ function Block(parentTrack, time, duration, color)
     self.hover = false;
     this.handleHover = false;
     this.text = "";
+    this.clear = function() {
+        this.shape.remove();
+    }
     this.getTime = function() {
         return this.time;
     }
@@ -34,7 +37,7 @@ function Block(parentTrack, time, duration, color)
     }
     this.updateColor = function(color) {
         self.color = color;
-        self.shape.css("fill", "hsl("+color+" 80%"+" 50%)");
+        self.shape.css("fill", "hsl("+color+" 80%"+" 40%)");
     }
     this.setLength = function(newLength) {
         self.size.x = newLength;

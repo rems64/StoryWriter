@@ -17,6 +17,13 @@ function Track(timeline)
     this.bottomLine = this.track.line().stroke({ width: 4 }).addClass("trackLines").addClass("trackLinesBottom");
     self.isSelected = false;
     this.svgCvs = this.parent.parent;
+    this.clear = function() {
+        for(var blk in self.blocks){
+            self.blocks[blk].clear();
+        }
+        self.blocks = []
+        self.track.remove()
+    }
     this.updateSelfComponents = function() {
         var ySum = 0;
         for(var i in self.parent.tracks) {
@@ -100,8 +107,32 @@ function Timeline(parent, tracksNbr, currentTime, startTime, length)
     this.unitLength = 1;
     this.tracks = []
     this.compiledTimeline = [];
+    this.reinit = function(tracksNbr, currentTime, startTime, length){
+        self.tracksNbr = tracksNbr;
+        self.init();
+    };
+    this.addTrack = function(nbr){
+        var i=0;
+        while(i<nbr)
+        {
+            this.tracks.push(new Track(self));
+            i++
+        }
+        self.update();
+    }
+    this.clear = function() {
+        for(var trk in self.tracks)
+        {
+            self.tracks[trk].clear();
+        }
+        self.tracks = []
+    }
     this.compile = function() {
-        self.compiledTimeline = [];
+        self.compiledTimeline = [
+            {
+                "tracksNbr": self.tracksNbr
+            }
+        ];
         var i = 0;
         for(var trk in self.tracks) {
             var compiledTrack = []
@@ -124,19 +155,34 @@ function Timeline(parent, tracksNbr, currentTime, startTime, length)
         //console.log(self.compiledTimeline);
     }
     this.save = function(path) {
-        var toWrite = JSON.stringify(self.compiledTimeline);
+        var toWrite = JSON.stringify(self.compiledTimeline, null, 4);
         //console.log(toWrite);
         fs.writeFile(path, toWrite, function (err) {
             if (err) {
               console.log('[ERROR] An error occured during saving process, please report');
+              error("SAVE PATH");
               console.log(err.message);
               return;
             }
             console.log('[INFO] Saving success')
+            info("Successfully saved");
           });
     };
     this.load = function(path) {
-
+        let rawdata = fs.readFileSync(path);
+        let infos = JSON.parse(rawdata);
+        self.reinit(infos[0].tracksNbr);
+        console.log(infos);
+        infos.shift();
+        for(var i in infos)
+        {
+            console.log(infos[i])
+            for(var j in infos[i])
+            {
+                //console.log(infos[i][j])
+                mT.newBlock(i, infos[i][j].t, infos[i][j].d, String(infos[i][j].c));
+            }
+        }
     };
 
     this.setTime = function(newTime) {
@@ -155,7 +201,7 @@ function Timeline(parent, tracksNbr, currentTime, startTime, length)
         this.addBlock(newBlock, trackId);
     }
     this.update = function() {
-        this.main.move(0, 40);
+        this.main.move(0, 10);
         for(var i in self.tracks)
         {
             self.tracks[i].update();
@@ -192,7 +238,7 @@ function Timeline(parent, tracksNbr, currentTime, startTime, length)
     }
     this.init = function() {
         var i = 0;
-        while(i<tracksNbr) {
+        while(i<self.tracksNbr) {
             self.tracks.push(new Track(self));
             i++
         }

@@ -1,4 +1,4 @@
-const { app, BrowserWindow, Menu } = require('electron')
+const { app, BrowserWindow, Menu, ipcMain, dialog } = require('electron')
 
 var settings = 
 {
@@ -7,11 +7,20 @@ var settings =
 
 var locals = 
 {
-  fileNew: "Nouveau",
-  fileOpen: "Ouvrir",
-  fileSave: "Enregistrer",
-  fileSaveAs: "Enregistrer sous"
+  "fileNew": "Nouveau",
+  "fileOpen": "Ouvrir",
+  "fileSave": "Enregistrer",
+  "fileSaveAs": "Enregistrer sous",
+  //"errorMsg": "An error occured during saving process, please report",
+  "errorMsg": "Une erreur est survenue durant le processus, merci de le signaler",
+  "infoMsg": "<i class='fas fa-info-circle fa-2x'></i> "
 }
+
+ipcMain.on("getLocals", (event, arg) => {
+  event.reply("sendLocals", {
+    locals: locals
+  })
+})
 
 function createWindow () {
   // Cree la fenetre du navigateur.
@@ -31,10 +40,55 @@ function createWindow () {
     {
         label: 'Fichier',
         submenu: [
-            {label:locals.fileNew},
-            {label:locals.fileOpen},
-            {label:locals.fileSave},
-            {label:locals.fileSaveAs}
+            {
+              label:locals.fileNew,
+              click() {
+                console.log("NEW");
+                win.webContents.send("new");
+              },
+              accelerator: "CmdOrCtrl+N"
+            },
+            {
+              label:locals.fileOpen,
+              click() {
+                //win.webContents.send("open");
+                
+                console.log("OPEN");
+                dialog.showOpenDialog({
+                  properties: ['openFile']
+                }).then(result => {
+                  console.log("SAVE AS");
+                  console.log(result);
+                  win.webContents.send("open", result)
+                })
+                
+              },
+              accelerator: "CmdOrCtrl+O",
+            },
+            {
+              label:locals.fileSave,
+              click() {
+                console.log("SAVE")
+                win.webContents.send("save")
+              },
+              accelerator: "CmdOrCtrl+S"
+            },
+            {
+              label:locals.fileSaveAs,
+              click() {
+                dialog.showSaveDialog({
+                  properties: ['openFile', 'multiSelections']
+                }).then(result => {
+                  if(!result.canceled)
+                  {
+                    console.log("SAVE AS");
+                    console.log(result);
+                    win.webContents.send("saveas", result);
+                  }
+                })
+              },
+              accelerator: "CmdOrCtrl+Alt+S"
+            }
         ]
       },
       {

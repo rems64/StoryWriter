@@ -1,8 +1,9 @@
 //const { isNode } = require("./utils.js")
 //const { svgCanvas } = require("./svg.js")
 //const { Timeline } = require("./timeline.js")
-const { Menu } = require("electron");
+const { Menu, ipcMain } = require("electron");
 
+var fileName = "saves/timeline1.sws"
 
 let svg = new svgCanvas("#timeline", "timelineSvg");
 let mT = new Timeline(svg, 5);
@@ -16,3 +17,30 @@ mT.newBlock(0, 700, 100, "80");
 mT.newBlock(1, 810, 100, "0");
 
 mT.update();
+
+ipc.on("save", () => {
+    console.log("saveiofbioeg");
+    mT.compile();
+    mT.save(fileName);
+    //mT.save("");
+})
+
+ipc.on("saveas", (event, infos) => {
+    console.log(infos);
+    mT.compile();
+    mT.save(infos.filePath);
+})
+
+ipc.on("open", (event, infos) => {
+    //mT.open(infos.filePaths[0]);
+    mT.clear();
+    mT.load(infos.filePaths[0]);
+})
+
+$("#clearBtn").click(() => {
+    mT.clear();
+})
+
+$("#addTrackBtn").click(() => {
+    mT.addTrack(1);
+})
