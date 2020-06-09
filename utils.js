@@ -10,8 +10,6 @@ var locals = {}
 
 ipc.send('getLocals', {});
 ipc.on('sendLocals', (event, data) => {
-    console.log("Async reply")
-    console.log(data);
     locals=data.locals
 });
 
@@ -24,7 +22,6 @@ function isNode()
 function colorPicker(parent, loc)
 {
     var self = this;
-    console.log(loc)
     this.container = document.createElement('div');
     $(this.container).addClass("colorPickerContainer").appendTo($(parent));
     $(this.container).css("left", loc.x);
@@ -39,8 +36,19 @@ function colorPicker(parent, loc)
     this.circleSelected = false;
     $(this.circleGradient).on("mousedown", function(event) {
         self.circleSelected = true;
-        
     });
+
+    this.btnsWrapper = document.createElement('div');
+    $(this.btnsWrapper).addClass("hg-btnsWrapper").appendTo($(this.container));
+
+    this.cancelBtn = document.createElement('button');
+    $(this.cancelBtn).addClass("hg-cancelBtn").appendTo($(this.btnsWrapper));
+    this.cancelBtn.innerHTML = "Annuler"
+
+    this.validateBtn = document.createElement('button');
+    $(this.validateBtn).addClass("hg-valBtn").appendTo($(this.btnsWrapper));
+    this.validateBtn.innerHTML = "Valider"
+
     $(document).on("mouseup", function(event) {
         self.circleSelected = false;
     });
@@ -55,7 +63,7 @@ function colorPicker(parent, loc)
             else
                 $(self.circleGradient).css({left:$(self.hueGradient).position().left-50+'px'});
             var colH = (($(self.circleGradient).position().left-$(self.hueGradient).position().left)/($(self.hueGradient).width()))*360
-            console.log(colH)
+            //console.log(colH)
             $(self.circleGradient).css("background-color", "hsl("+ colH +",100%, 50%)")
         }
     });
@@ -71,12 +79,12 @@ function ContextMenu(parent, loc, elements)
     this.container = document.createElement("div");
     this.elements = [];
     this.destroy = function() {
-        console.log("Bye bye")
+        //console.log("Bye bye")
         //$(this.container).remove();
         $(".contextMenuContainer").remove();
     };
     $(this.container).on("mouseleave", function() {
-        console.log("Destroying");
+        //console.log("Destroying");
         $(".contextMenuContainer").remove();
     })
     if(parent!=false)
@@ -100,7 +108,7 @@ function ContextMenu(parent, loc, elements)
         if((loc.y+($(this.container).height()))>($(document).height()))
         {
             $(this.container).css("top", String(loc.y-(20+((loc.y-10+($(this.container).height()))-($(document).height()))))+"px");
-            console.log("DEPASSE")
+            //console.log("DEPASSE")
         }
         else
         {
@@ -124,11 +132,11 @@ function ContextMenuElement(ctxtMenu, infos)
     this.bg.innerHTML = infos.title;
     this.init = function() {
         $(this.bg).addClass("contextMenuElement").appendTo($(ctxtMenu.container));
-        console.log(infos.additionalClasses);
+        //console.log(infos.additionalClasses);
         for(var i in infos.additionalClasses)
         {
             $(this.bg).addClass(infos.additionalClasses[i]);
-            console.log(infos.additionalClasses[i])
+            //console.log(infos.additionalClasses[i])
         }
     }
     this.init();

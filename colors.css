@@ -6,7 +6,6 @@
     left: 0;
     padding: 40px;
     width: 400px;
-    height: 100px;
     border-radius: 10px;
     background-color: #212121;
     border: solid 2px hsl(0, 00%, 40%);
@@ -37,4 +36,76 @@
     background-color: hsl(0,100%,50%);
     border-radius: 22px;
     border-radius: 50%;
+}
+
+.hg-btnsWrapper
+{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.hg-cancelBtn
+{
+    display: inline;
+    align-self: flex-start;
+    outline: none;
+    text-align: center;
+    text-decoration: none;
+    padding: 10px;
+    padding: 15px 32px;
+    background-color: hsl(110, 0%, 40%);
+    color: white;
+    border: none;
+    
+    margin: 1%;
+
+    display: inline-block;
+    font-size: 16px;
+
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+.hg-valBtn
+{
+    align-self: flex-end;
+    outline: none;
+    text-align: center;
+    text-decoration: none;
+    padding: 10px;
+    padding: 15px 32px;
+    background-color: hsl(110, 80%, 40%);
+    color: white;
+    border: none;
+    position: relative;
+    right: 0;
+
+    margin: 1%;
+
+    display: inline-block;
+    font-size: 16px;
+
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+
+}
+
+.hg-cancelBtn:hover
+{
+    background-color: hsl(110, 0%, 35%);
+}
+
+.hg-cancelBtn:active
+{
+    background-color: hsl(110, 0%, 30%);
+}
+
+
+.hg-valBtn:hover
+{
+    background-color: hsl(110, 80%, 35%);
+}
+
+.hg-valBtn:active
+{
+    background-color: hsl(110, 80%, 30%);
 }
