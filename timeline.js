@@ -200,6 +200,29 @@ function Timeline(parent, tracksNbr, currentTime, startTime, length)
         let newBlock = new Block(this.tracks[trackId], time, duration, color);
         this.addBlock(newBlock, trackId);
     }
+    this.newDragBlock = function() {
+        let nBlk = new Block(this.tracks[0], 0, 100, "0");
+        var evtMm = $(document).on("mousemove.drag", (event) => {
+            nBlk.container.move(nBlk.position.x, nBlk.position.y);
+            nBlk.position.x = nBlk.svgCvs.getCoords(event)[0] - nBlk.clickOffset.x;
+            var concernedTrack = nBlk.parent.parent.getApparteningTrack(nBlk.svgCvs.getCoords(event)[1]);
+            //console.log(concernedTrack);
+            if(concernedTrack>=0) {
+                nBlk.container.addTo(nBlk.parent.parent.tracks[concernedTrack].track);
+                nBlk.pTrack.removeBlock(nBlk);
+                nBlk.pTrack = nBlk.parent.parent.tracks[concernedTrack];
+                nBlk.pTrack.addBlock(nBlk);
+                nBlk.size.y = nBlk.parent.parent.tracks[concernedTrack].height;
+                nBlk.shape.size(nBlk.size.x, nBlk.size.y);
+                //console.log(concernedTrack)
+            }
+
+        })
+        var evtMd = $(document).on("mousedown.drag", () => {
+            $(document).off("mousemove.drag");
+            $(document).off("mousedown.drag");
+        })
+    }
     this.update = function() {
         this.main.move(0, 10);
         for(var i in self.tracks)
@@ -219,7 +242,7 @@ function Timeline(parent, tracksNbr, currentTime, startTime, length)
         var height = self.tracks[0].height;
         for(var i in self.tracks) {
             //currentHeight+=self.tracks[i].loc.x
-            currentHeight+=height
+            currentHeight+=height;
             height = self.tracks[i].height;
             if(targetHeight > currentHeight) {
                 if(targetHeight < (currentHeight+height)) {

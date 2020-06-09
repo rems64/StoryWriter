@@ -79,11 +79,23 @@ function Block(parentTrack, time, duration, color)
                         y: event.clientY
                     },
                     {
-                        "Editer": function() {
-                            showInputPopup(self);
+                        "Editer": {
+                            callback: function() {
+                                showInputPopup(self);
+                            }
                         },
-                        "Changer la couleur": function() {
-                            showColorPopop(self);
+                        "Changer la couleur": {
+                            callback: function() {
+                                console.log("couco")
+                                console.log(event)
+                                showColorPopop(self, {x: event.clientX, y:event.clientY});
+                            }
+                        },
+                        "Supprimer": {
+                            callback: function() {
+                                self.clear();
+                            },
+                            additionalClasses: ["contextMenuElementRed"]
                         }
                     });
         }
@@ -117,7 +129,7 @@ function Block(parentTrack, time, duration, color)
     });
     $(document).on("mousemove", function(event) {
         if(self.isSelected) {
-            if(!self.handleHover) {
+            if(!self.handleHover) { // Move block
                 self.container.move(self.position.x, self.position.y);
                 self.position.x = self.svgCvs.getCoords(event)[0] - self.clickOffset.x;
                 var concernedTrack = self.parent.parent.getApparteningTrack(self.svgCvs.getCoords(event)[1]);

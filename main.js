@@ -37,6 +37,10 @@ ipc.on("open", (event, infos) => {
     mT.load(infos.filePaths[0]);
 })
 
+$("#addBtn").click(() => {
+    mT.newDragBlock();
+})
+
 $("#clearBtn").click(() => {
     mT.clear();
 })

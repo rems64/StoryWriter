@@ -1,7 +1,21 @@
-.hg-master {
+.colorPickerContainer {
+    user-select: none;
+    -webkit-user-select: none;
     position: absolute;
+    top: 0;
+    left: 0;
+    padding: 40px;
+    width: 400px;
+    height: 100px;
+    border-radius: 10px;
+    background-color: #212121;
+    border: solid 2px hsl(0, 00%, 40%);
+}
+
+.hg-master {
+    position: relative;
     top: 0px;
-    left: 500px;
+    left: 0px;
     user-select: none;
     -webkit-user-select: none;
     height:8px;
@@ -12,26 +26,15 @@
 }
 
 .hg-circle {
+    position: relative;
     user-select: none;
     -webkit-user-select: none;
-    position: absolute;
     height: 20px;
     width: 20px;
     left: 10px;
+    top: -15px;
     border: 2px white solid;
+    background-color: hsl(0,100%,50%);
     border-radius: 22px;
     border-radius: 50%;
-}
-
-.colorPickerContainer {
-    user-select: none;
-    -webkit-user-select: none;
-    position: absolute;
-    top: 0;
-    left: 0;
-    padding: 10px;
-    width: 400px;
-    height: 100px;
-    border-radius: 10px;
-    background-color: #212121;
 }

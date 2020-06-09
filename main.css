@@ -221,11 +221,12 @@ body, html
     display: inline-block;
     top: 0;
     left: 0;
+    overflow: hidden;
 }
 
 .contextMenuElement
 {
-    background-color: hsl(0, 0%, 35%);
+    background-color: hsl(0, 0%, 40%);
     padding: 10px;
     -webkit-user-select: none;
     user-select: none;
@@ -237,12 +238,27 @@ body, html
 
 .contextMenuElement:hover
 {
-    background-color: hsl(0, 0%, 30%);
+    background-color: hsl(0, 0%, 35%);
 }
 
 .contextMenuElement:active
 {
-    background-color: hsl(0, 0%, 25%);
+    background-color: hsl(0, 0%, 30%);
+}
+
+.contextMenuElementRed
+{
+    background-color: hsl(0, 80%, 40%);
+}
+
+.contextMenuElementRed:hover
+{
+    background-color: hsl(0, 80%, 35%);
+}
+
+.contextMenuElementRed:active
+{
+    background-color: hsl(0, 80%, 30%);
 }
 
 .errorMsg

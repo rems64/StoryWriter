@@ -57,9 +57,9 @@ function createWindow () {
                 dialog.showOpenDialog({
                   properties: ['openFile']
                 }).then(result => {
-                  console.log("SAVE AS");
                   console.log(result);
-                  win.webContents.send("open", result)
+                  if(!result.canceled)
+                    win.webContents.send("open", result)
                 })
                 
               },

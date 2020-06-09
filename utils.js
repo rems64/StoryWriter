@@ -21,11 +21,14 @@ function isNode()
     return ((typeof process !== 'undefined') && (process.release.name === 'node'))
 }
 
-function colorPicker(parent)
+function colorPicker(parent, loc)
 {
     var self = this;
+    console.log(loc)
     this.container = document.createElement('div');
     $(this.container).addClass("colorPickerContainer").appendTo($(parent));
+    $(this.container).css("left", loc.x);
+    $(this.container).css("top", loc.y);
 
     this.hueGradient = document.createElement('div');
     $(this.hueGradient).addClass("hg-master").appendTo($(this.container));
@@ -42,8 +45,18 @@ function colorPicker(parent)
         self.circleSelected = false;
     });
     $(document).on("mousemove", function(event) {
+        var xPos = event.clientX-40-$(self.container).position().left;
         if(self.circleSelected) {
-            $(self.circleGradient).css({left:event.clientX-10+'px'});
+            if((xPos+20)>$(self.hueGradient).position().left-20)
+                if((xPos+20)<($(self.hueGradient).position().left+$(self.hueGradient).width()-20))
+                    $(self.circleGradient).css({left:xPos-10+'px'});
+                else
+                    $(self.circleGradient).css({left:($(self.hueGradient).position().left+$(self.hueGradient).width())-50+'px'});
+            else
+                $(self.circleGradient).css({left:$(self.hueGradient).position().left-50+'px'});
+            var colH = (($(self.circleGradient).position().left-$(self.hueGradient).position().left)/($(self.hueGradient).width()))*360
+            console.log(colH)
+            $(self.circleGradient).css("background-color", "hsl("+ colH +",100%, 50%)")
         }
     });
     this.init = function() {
@@ -57,8 +70,6 @@ function ContextMenu(parent, loc, elements)
     var self = this;
     this.container = document.createElement("div");
     this.elements = [];
-    $(this.container).css("left", String(loc.x-10)+"px");
-    $(this.container).css("top", String(loc.y-10)+"px");
     this.destroy = function() {
         console.log("Bye bye")
         //$(this.container).remove();
@@ -76,13 +87,27 @@ function ContextMenu(parent, loc, elements)
     {
         $(this.container).addClass("contextMenuContainer").appendTo($("body"));
     }
-    var j = 0;
-    for(var i in elements) {
-        this.elements.push(new ContextMenuElement(this, {
-            title: i,
-            callback: elements[i] 
-        }));
+    this.init = function() {
+        var j = 0;
+        for(var i in elements) {
+            this.elements.push(new ContextMenuElement(this, {
+                title: i,
+                callback: elements[i].callback,
+                additionalClasses: elements[i].additionalClasses
+            }));
+        }
+        $(this.container).css("left", String(loc.x-10)+"px");
+        if((loc.y+($(this.container).height()))>($(document).height()))
+        {
+            $(this.container).css("top", String(loc.y-(20+((loc.y-10+($(this.container).height()))-($(document).height()))))+"px");
+            console.log("DEPASSE")
+        }
+        else
+        {
+            $(this.container).css("top", String(loc.y-10)+"px");
+        }
     }
+    this.init()
     this.remove = function() {
         /*
         for(var i in this.elements) {
@@ -97,16 +122,25 @@ function ContextMenuElement(ctxtMenu, infos)
 {
     this.bg = document.createElement("div");
     this.bg.innerHTML = infos.title;
-    $(this.bg).addClass("contextMenuElement").appendTo($(ctxtMenu.container));
+    this.init = function() {
+        $(this.bg).addClass("contextMenuElement").appendTo($(ctxtMenu.container));
+        console.log(infos.additionalClasses);
+        for(var i in infos.additionalClasses)
+        {
+            $(this.bg).addClass(infos.additionalClasses[i]);
+            console.log(infos.additionalClasses[i])
+        }
+    }
+    this.init();
     $(this.bg).on("click", function() {
         ctxtMenu.remove();
         infos.callback();
     })
 }
 
-function showColorPopop(concerned)
+function showColorPopop(concerned, loc)
 {
-    new colorPicker("body");
+    new colorPicker("body", loc);
 }
 
 function showInputPopup(concerned)
