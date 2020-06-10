@@ -19,13 +19,11 @@ function isNode()
     return ((typeof process !== 'undefined') && (process.release.name === 'node'))
 }
 
-function colorPicker(parent, loc)
+function colorPicker(parent, loc, initColor)
 {
     var self = this;
     this.container = document.createElement('div');
     $(this.container).addClass("colorPickerContainer").appendTo($(parent));
-    $(this.container).css("left", loc.x);
-    $(this.container).css("top", loc.y);
 
     this.hueGradient = document.createElement('div');
     $(this.hueGradient).addClass("hg-master").appendTo($(this.container));
@@ -52,6 +50,7 @@ function colorPicker(parent, loc)
     $(document).on("mouseup", function(event) {
         self.circleSelected = false;
     });
+    this.colH = 0;
     $(document).on("mousemove", function(event) {
         var xPos = event.clientX-40-$(self.container).position().left;
         if(self.circleSelected) {
@@ -62,13 +61,55 @@ function colorPicker(parent, loc)
                     $(self.circleGradient).css({left:($(self.hueGradient).position().left+$(self.hueGradient).width())-50+'px'});
             else
                 $(self.circleGradient).css({left:$(self.hueGradient).position().left-50+'px'});
-            var colH = (($(self.circleGradient).position().left-$(self.hueGradient).position().left)/($(self.hueGradient).width()))*360
-            //console.log(colH)
-            $(self.circleGradient).css("background-color", "hsl("+ colH +",100%, 50%)")
+            self.colH = (($(self.circleGradient).position().left-$(self.hueGradient).position().left)/($(self.hueGradient).width()))*360
+            //console.log(self.colH)
+            $(self.circleGradient).css("background-color", "hsl("+ self.colH +",100%, 50%)")
+            concernedObj.updateColor(self.colH);
         }
     });
+    $(self.cancelBtn).click(() => {
+        $(self.container).remove()
+        concernedObj=undefined;
+    })
+    $(self.validateBtn).click(() => {
+        $(self.container).remove()
+        concernedObj.updateColor(self.colH);
+    })
+    $(self.container).on("mouseleave", function() {
+        $(self.container).remove()
+        concernedObj=undefined;
+    })
     this.init = function() {
+        var desiredLoc = (initColor/360)*($(self.hueGradient).width())+$(self.hueGradient).position().left-40
+        $(self.circleGradient).css({left:desiredLoc+'px'});
+        self.colH = (($(self.circleGradient).position().left-$(self.hueGradient).position().left)/($(self.hueGradient).width()))*360
+        //console.log(self.colH)
+        $(self.circleGradient).css("background-color", "hsl("+ self.colH +",100%, 50%)")
 
+        //if((loc.y+($(this.container).height()))>($(document).height()))
+        //if(($(document).height()-$(self.container).height()))
+        console.log((loc.y+$(self.container).outerHeight()))
+        console.log($(document).height())
+        if((loc.y+$(self.container).outerHeight())>$(document).height())
+        {
+            //$(this.container).css("top", String(loc.y-(20+((loc.y-10+($(this.container).height()))-($(document).height()))))+"px");
+            $(this.container).css("top", String($(document).height()-$(self.container).outerHeight())+"px");
+            //$(this.container).css("top", String(0)+"px");
+            console.log("DEPASSE")
+        }
+        else
+        {
+            $(this.container).css("top", String(loc.y)+"px");
+        }
+
+        if((loc.x+$(self.container).outerWidth())>$(document).width())
+        {
+            $(this.container).css("left", String($(document).width()-$(self.container).outerWidth())+"px");
+        }
+        else
+        {
+            $(this.container).css("left", String(loc.x)+"px");
+        }
     }
     this.init();
 }
@@ -148,7 +189,8 @@ function ContextMenuElement(ctxtMenu, infos)
 
 function showColorPopop(concerned, loc)
 {
-    new colorPicker("body", loc);
+    new colorPicker("body", loc, concerned.getCol());
+    concernedObj=concerned;
 }
 
 function showInputPopup(concerned)

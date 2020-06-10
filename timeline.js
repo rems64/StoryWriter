@@ -155,7 +155,8 @@ function Timeline(parent, tracksNbr, currentTime, startTime, length)
         //console.log(self.compiledTimeline);
     }
     this.save = function(path) {
-        var toWrite = JSON.stringify(self.compiledTimeline, null, 4);
+        //var toWrite = JSON.stringify(self.compiledTimeline, null, 4);
+        var toWrite = JSON.stringify(self.compiledTimeline);
         //console.log(toWrite);
         fs.writeFile(path, toWrite, function (err) {
             if (err) {
@@ -238,10 +239,17 @@ function Timeline(parent, tracksNbr, currentTime, startTime, length)
        this.tracks[trackId].blocks.splice(newIndex, 0, block)
     }
     this.getApparteningTrack = function(targetHeight) {
+        console.log(targetHeight);
+        var currentMin = self.main.y();
+        var currentMax = 0;
         var currentHeight = 0;
         var height = self.tracks[0].height;
         for(var i in self.tracks) {
+            if(i>0)
+                currentMin+=self.tracks[i-1].height
+            currentMax+=self.tracks[i].height
             //currentHeight+=self.tracks[i].loc.x
+            /*
             currentHeight+=height;
             height = self.tracks[i].height;
             if(targetHeight > currentHeight) {
@@ -258,6 +266,22 @@ function Timeline(parent, tracksNbr, currentTime, startTime, length)
             }
         }
         return -1
+        */
+        if(targetHeight>currentMin)
+        {
+            if(targetHeight<currentMax)
+            {
+                return i;
+            }
+            else
+            {
+            }
+        }
+        else{
+            console.log("Erreur incompréhensible");
+        }
+       }
+       return -1
     }
     this.init = function() {
         var i = 0;

@@ -39,6 +39,9 @@ function Block(parentTrack, time, duration, color)
         self.color = color;
         self.shape.css("fill", "hsl("+color+" 80%"+" 40%)");
     }
+    this.getCol = function() {
+        return self.color;
+    }
     this.setLength = function(newLength) {
         self.size.x = newLength;
         self.shape.size(self.size.x, self.size.y);
